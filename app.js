@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 });
 
 // server listening to port specified in env file
-app.listen((PORT, "0.0.0.0"), () => {
+app.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
 });
 // console.log("test script");
