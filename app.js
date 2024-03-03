@@ -19,7 +19,7 @@ const PORT = process.env.PORT | 5001;
 //   optionsSuccessStatus: 204,
 // };
 
-app.use(cors());
+app.use(cors({ origin: true, credentials: true }));
 app.use(express.json()); //body parser for request bodies
 app.use("/api", router); // for route /api router will be called
 app.use("/api/enquiry", enquiryRouter);
