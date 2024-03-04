@@ -1,6 +1,7 @@
 const enquiryRepository = require("../repositories/enquiryRepository");
 const sendSMS = require("../communications/smsService");
 const { sendEmail } = require("../communications/mailService");
+const { sendEmailAdmin } = require("../communications/mailServiceAdmin");
 
 const getEnquiryService = () => {
   try {
@@ -37,6 +38,12 @@ const makeEnquiryService = (reqBody) => {
 
     // sendSMS(smsBody, enquiryContactNo);
     sendEmail(enquiryEmail, enquiryName);
+    sendEmailAdmin(
+      enquiryEmail,
+      enquiryName,
+      enquiryContactNo,
+      enquiryDestination
+    );
 
     return true;
   } catch (err) {
