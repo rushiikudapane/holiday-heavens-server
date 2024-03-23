@@ -1,7 +1,12 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
 
-const sendEmailAdmin = (userEmail, userName, userContact, userDestination) => {
+const sendEmailAdmin = async (
+  userEmail,
+  userName,
+  userContact,
+  userDestination
+) => {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -11,6 +16,7 @@ const sendEmailAdmin = (userEmail, userName, userContact, userDestination) => {
   });
 
   const bccEmails = process.env.BCC_MAIL.split(",");
+  // console.log(bccEmails);
 
   let mailOptions = {
     from: process.env.FROM_MAIL,
@@ -64,7 +70,7 @@ const sendEmailAdmin = (userEmail, userName, userContact, userDestination) => {
        <div class="container">
            <div class="header">
                <img src="https://res.cloudinary.com/dcgwmpbmb/image/upload/v1709476971/samples/holiday-heavens/logo/logo.png" alt="Your Company Logo" class="logo">
-               <h1>Thank You for Contacting Us</h1>
+               <h1>Hello Admin, someone just made an enquiry.</h1>
            </div>
            <div class="content">
                <p>Hello Admin, customer with name <b>${userName}</b> has made an enquiry or downloaded the quotation for destination <b>${userDestination}</b>. Please them on <b>${userContact}</b> or <b>${userEmail}</b>. Have a great Day!</p>
@@ -78,12 +84,16 @@ const sendEmailAdmin = (userEmail, userName, userContact, userDestination) => {
    </html>`,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent: " + info.response);
-    }
+  await new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.log(error);
+        reject(err);
+      } else {
+        console.log("Email sent: " + info.response);
+        resolve(info);
+      }
+    });
   });
 };
 

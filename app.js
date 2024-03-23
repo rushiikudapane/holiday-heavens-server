@@ -22,13 +22,24 @@ const PORT = process.env.PORT | 5001;
 app.use(
   cors({ origin: "https://holidayheavens.vercel.app", credentials: true })
 );
+
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//     credentials: true,
+//     optionsSuccessStatus: 204,
+//     credentials: true,
+//   })
+// );
+
+// app.use(cors(corsOptions));
+
 app.use(express.json()); //body parser for request bodies
 app.use("/api", router); // for route /api router will be called
 app.use("/api/enquiry", enquiryRouter);
 app.use("/api/destination", destinationRouter);
 app.use("/api/quotation", quotationRouter);
-
-// app.use(cors());
 
 app.get("/", (req, res) => {
   res.status(200).send("Server started!!! Holiday Heavens server started");
