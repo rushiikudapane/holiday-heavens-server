@@ -84,8 +84,20 @@ const sendEmailAdmin = async (
    </html>`,
   };
 
-  await new Promise((resolve, reject) => {
-    transporter.sendMail(mailOptions, (error, info) => {
+  // await new Promise((resolve, reject) => {
+  //   transporter.sendMail(mailOptions, (error, info) => {
+  //     if (error) {
+  //       console.log(error);
+  //       reject(err);
+  //     } else {
+  //       console.log("Email sent: " + info.response);
+  //       resolve(info);
+  //     }
+  //   });
+  // });
+
+  try {
+    const info = await transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.log(error);
         reject(err);
@@ -94,7 +106,9 @@ const sendEmailAdmin = async (
         resolve(info);
       }
     });
-  });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 module.exports = { sendEmailAdmin };
