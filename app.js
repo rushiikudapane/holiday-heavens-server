@@ -19,9 +19,7 @@ const PORT = process.env.PORT | 5001;
 //   optionsSuccessStatus: 204,
 // };
 
-app.use(
-  cors({ origin: "https://holidayheavens.vercel.app", credentials: true })
-);
+app.use(cors({ origin: "https://holidayheavens.com/", credentials: true }));
 
 // app.use(
 //   cors({
