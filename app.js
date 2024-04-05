@@ -21,7 +21,7 @@ const PORT = process.env.PORT | 5001;
 
 app.use(
   cors({
-    origin: ["https://holidayheavens.com/", "http://holidayheavens.com/"],
+    origin: "https://holidayheavens.com/",
     credentials: true,
   })
 );
