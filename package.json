@@ -10,6 +10,7 @@
   "author": "Rushiraj Kudapane",
   "license": "ISC",
   "dependencies": {
+    "@elasticemail/elasticemail-client": "^4.0.23",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "emailjs": "^4.0.3",

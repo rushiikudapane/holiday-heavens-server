@@ -1,5 +1,10 @@
-const nodemailer = require("nodemailer");
 require("dotenv").config();
+
+const ElasticEmail = require("@elasticemail/elasticemail-client");
+const client = ElasticEmail.ApiClient.instance;
+const apikey = client.authentications["apikey"];
+apikey.apiKey = process.env.ELASTIC_EMAIL_API_KEY;
+const emailsApi = new ElasticEmail.EmailsApi();
 
 const sendEmailAdmin = async (
   userEmail,
@@ -7,25 +12,8 @@ const sendEmailAdmin = async (
   userContact,
   userDestination
 ) => {
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.FROM_MAIL,
-      pass: process.env.MAIL_PASSWORD,
-    },
-  });
-
-  const bccEmails = process.env.BCC_MAIL.split(",");
-  // console.log(bccEmails);
-
-  let mailOptions = {
-    from: process.env.FROM_MAIL,
-    to: process.env.TO_MAIL,
-    bcc: bccEmails,
-    subject: process.env.MAIL_SUBJECT,
-
-    text: `Hello Admin, customer with name <b>${userName}</b> has made an enquiry or downloaded the quotation for destination ${userDestination}. Please them on ${userContact} or ${userEmail} Have a great Day!`,
-    html: `<!DOCTYPE html>
+  const htmlTitle = `Hello Admin, customer with name <b>${userName}</b> has made an enquiry or downloaded the quotation for destination ${userDestination}. Please them on ${userContact} or ${userEmail} Have a great Day!`;
+  const htmlContent = `<!DOCTYPE html>
    <html lang="en">
    <head>
        <meta charset="UTF-8">
@@ -81,34 +69,43 @@ const sendEmailAdmin = async (
            </div>
        </div>
    </body>
-   </html>`,
+   </html>`;
+
+  const emailData = {
+    Recipients: {
+      To: [process.env.TO_MAIL, process.env.SUPPORT_MAIL],
+    },
+    Content: {
+      Body: [
+        {
+          ContentType: "HTML",
+          Charset: "utf-8",
+          Content: htmlContent,
+        },
+        {
+          ContentType: "PlainText",
+          Charset: "utf-8",
+          Content: "Mail content plintext.",
+        },
+      ],
+      From: process.env.SUPPORT_MAIL,
+      Subject: "Holiday Heavens Notification!!!",
+    },
   };
 
-  // await new Promise((resolve, reject) => {
-  //   transporter.sendMail(mailOptions, (error, info) => {
-  //     if (error) {
-  //       console.log(error);
-  //       reject(err);
-  //     } else {
-  //       console.log("Email sent: " + info.response);
-  //       resolve(info);
-  //     }
-  //   });
-  // });
+  const callback = (error, data, response) => {
+    if (error) {
+      console.error(error);
+      // res.status(200).json({success:error});
+    } else {
+      console.log("Data: ", data, " Response: ", response);
+      console.log("API called successfully.");
+      console.log("Email sent.");
+      //res.status(200).json({success:"done"});
+    }
+  };
 
-  try {
-    const info = await transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-        reject(err);
-      } else {
-        console.log("Email sent: " + info.response);
-        resolve(info);
-      }
-    });
-  } catch (err) {
-    console.log(err);
-  }
+  emailsApi.emailsTransactionalPost(emailData, callback);
 };
 
 module.exports = { sendEmailAdmin };
