@@ -1,5 +1,5 @@
-const nodemailer = require("nodemailer");
-const { SMTPClient } = require("emailjs");
+// const nodemailer = require("nodemailer");
+// const { SMTPClient } = require("emailjs");
 require("dotenv").config();
 
 // const sendEmail = async (userEmail, userName) => {
