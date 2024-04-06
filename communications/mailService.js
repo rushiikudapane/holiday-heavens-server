@@ -113,7 +113,8 @@ const sendEmail = async (userEmail, userName) => {
       ssl: true,
     });
 
-    const message = await client.sendAsync({
+    // const message = await client.sendAsync({
+    const message = {
       text: `Thanks <b>${userName}</b> for making enquiry at Holiday Heavens. We will make sure that you will get best service. Our executive will reach you out soon, Have a great Day!`,
       from: process.env.FROM_MAIL,
       to: userEmail,
@@ -183,6 +184,11 @@ const sendEmail = async (userEmail, userName) => {
           alternative: true,
         },
       ],
+      // });
+    };
+
+    client.send(message, (err, message) => {
+      console.log(err || message);
     });
     console.log("message: ", message);
   } catch (err) {
