@@ -48,6 +48,9 @@ app.get("/", (req, res) => {
   res.status(200).send("Server started!!! Holiday Heavens server started");
 });
 
+app.get("/health", (req, res) => {
+  res.sendStatus(200);
+});
 // server listening to port specified in env file
 app.listen(PORT, () => {
   console.log(`Server started on port: ${PORT}`);
