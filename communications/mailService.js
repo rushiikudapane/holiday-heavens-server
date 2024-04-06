@@ -103,14 +103,16 @@ require("dotenv").config();
 const sendEmail = async (userEmail, userName) => {
   // assuming top-level await for brevity
 
-  const client = new SMTPClient({
-    user: process.env.FROM_MAIL,
-    password: process.env.MAIL_PASSWORD,
-    host: "957cognizant@gmail.com",
-    ssl: true,
-  });
-
   try {
+    const { SMTPClient } = await import("emailjs");
+
+    const client = new SMTPClient({
+      user: process.env.FROM_MAIL,
+      password: process.env.MAIL_PASSWORD,
+      host: "smtp.gmail.com",
+      ssl: true,
+    });
+
     const message = await client.sendAsync({
       text: `Thanks <b>${userName}</b> for making enquiry at Holiday Heavens. We will make sure that you will get best service. Our executive will reach you out soon, Have a great Day!`,
       from: process.env.FROM_MAIL,
