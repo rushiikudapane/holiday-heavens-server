@@ -10,7 +10,10 @@ const getDestinations = async (req, res) => {
     res.status(200).send(destinations);
     const endTime = Date.now();
 
-    console.warn("Server response time: ", endTime - startTime + " ms");
+    const ip = req.ip || req.connection.remoteAddress;
+    console.warn(
+      `Server response time for system ${ip} : ${endTime - startTime} ms`
+    );
   } catch (err) {
     console.log(err);
   }
