@@ -2,11 +2,15 @@ const destinationService = require("../services/destinationService");
 
 const getDestinations = async (req, res) => {
   try {
+    const startTime = Date.now();
     const destinationType = req.query.type;
     const destinations = await destinationService.getDestinationsService(
       destinationType
     );
     res.status(200).send(destinations);
+    const endTime = Date.now();
+
+    console.warn("Server response time: ", endTime - startTime + " ms");
   } catch (err) {
     console.log(err);
   }
